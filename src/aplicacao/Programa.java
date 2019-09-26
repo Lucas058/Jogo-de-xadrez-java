@@ -15,28 +15,28 @@ public class Programa {
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		PartidaXadrez partida = new PartidaXadrez();
+		PartidaXadrez partidaXadrez = new PartidaXadrez();
 		List<PecaXadrez> capturada = new ArrayList<>();
-
-		while (true) {
+		
+		while (!partidaXadrez.getCheckMate()) {
 			try {
 				UI.clearScreen();
-				UI.printPartida(partida, capturada);
+				UI.printPartida(partidaXadrez, capturada);
 				System.out.println();
 				
 				System.out.print("Origem: ");
 				PosicaoXadrez origem = UI.lerPosicaoXadrez(sc);
 				
-				boolean [][] movimentosPossiveis = partida.movimentosPossiveis(origem);
+				boolean [][] movimentosPossiveis = partidaXadrez.movimentosPossiveis(origem);
 				UI.clearScreen();
-				UI.printTabuleiro(partida.getPecas(), movimentosPossiveis);
+				UI.printTabuleiro(partidaXadrez.getPecas(), movimentosPossiveis);
 				
 				System.out.println();
 				
 				System.out.print("Destino: ");
 				PosicaoXadrez destino = UI.lerPosicaoXadrez(sc);
 				
-				PecaXadrez pecaCapturada = partida.executarMovimentoXadrez(origem, destino);
+				PecaXadrez pecaCapturada = partidaXadrez.executarMovimentoXadrez(origem, destino);
 				
 				if (pecaCapturada != null) {
 					capturada.add(pecaCapturada);
@@ -49,6 +49,9 @@ public class Programa {
 				sc.nextLine();
 			}
 		}
+		
+		UI.clearScreen();
+		UI.printPartida(partidaXadrez, capturada);
 	}
 
 }

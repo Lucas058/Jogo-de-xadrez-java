@@ -50,17 +50,22 @@ public class UI {
 			throw new InputMismatchException("Erro ao ler a posição. Posições válidas são de a1 ate h8!");
 		}
 	}
-	
+
 	public static void printPartida(PartidaXadrez partidaXadrez, List<PecaXadrez> capturada) {
 		printTabuleiro(partidaXadrez.getPecas());
 		System.out.println();
 		printPecasCapturadas(capturada);
 		System.out.println();
 		System.out.println("Turno: " + partidaXadrez.getTurno());
-		System.out.println("Esperando jogador: " + partidaXadrez.getJogadorCor());
 		
-		if(partidaXadrez.getCheck()) {
-			System.out.println("CHECK");
+		if (!partidaXadrez.getCheckMate()) {
+			System.out.println("Esperando jogador: " + partidaXadrez.getJogadorCor());
+			if (partidaXadrez.getCheck()) {
+				System.out.println("CHECK");
+			}
+		}else {
+			System.out.println("CHECKMATE!");
+			System.out.println("Vencedor: " + partidaXadrez.getJogadorCor());
 		}
 	}
 
@@ -74,7 +79,7 @@ public class UI {
 		}
 		System.out.println("  a b c d e f g h");
 	}
-	
+
 	public static void printTabuleiro(PecaXadrez[][] pecas, boolean[][] movimentosPossiveis) {
 		for (int i = 0; i < pecas.length; i++) {
 			System.out.print((8 - i) + " ");
@@ -87,7 +92,7 @@ public class UI {
 	}
 
 	private static void printPeca(PecaXadrez peca, boolean fundo) {
-		if(fundo) {
+		if (fundo) {
 			System.out.print(ANSI_BLUE_BACKGROUND);
 		}
 		if (peca == null) {
@@ -101,15 +106,15 @@ public class UI {
 		}
 		System.out.print(" ");
 	}
-	
+
 	private static void printPecasCapturadas(List<PecaXadrez> capturada) {
 		List<PecaXadrez> branco = capturada.stream().filter(x -> x.getCor() == Cor.BRANCO).collect(Collectors.toList());
 		List<PecaXadrez> preto = capturada.stream().filter(x -> x.getCor() == Cor.PRETO).collect(Collectors.toList());
-		
+
 		System.out.println("Peças capturadas:");
 		System.out.print("Brancas: ");
 		System.out.print(ANSI_WHITE);
-		System.out.println(Arrays.deepToString(branco.toArray()));	
+		System.out.println(Arrays.deepToString(branco.toArray()));
 		System.out.print(ANSI_RESET);
 		System.out.print("Pretas: ");
 		System.out.print(ANSI_YELLOW);
